@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card meta-card">
+                    <div class="card-content">
+                        <form name="meta-form" class="form" action="{% url 'api:edit-account' sfid=account.sfid %}"
+                            method="POST">
+                            {% csrf_token %}
+                            <div class="level">
+                                <div class="level-left">
+                                    <h1 class="title">{{ account.name }}</h1>
+                                </div>
+                                <div class="level-right">
+                                    <div class="dropdown is-right is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                                aria-controls="meta-menu">
+                                                <span class="icon is-medium">
+                                                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="meta-menu" class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                                href="https://www.linkedin.com/search/results/index/?keywords={{ account.name }}"
+                                                target="_blank">Search</a>
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:queue-contacts' sfid=account.sfid %}">Queue All</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="label">Insight</label>
+                                    <textarea name="insight" class="textarea">{{ account.insight }}</textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-fullwidth">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <footer class="card-footer">
+                        <a class="card-footer-item is-primary" href="{% url 'app:account' sfid=account.sfid %}">Return
+                            to View</a>
+                    </footer>
+                </div>
+            </div>
+            <div class="column is-two-thirds">
+                <div class="columns is-multiline">
+                    {% for contact in contacts %}
+                    <div class="column is-6">
+                        <div class="card">
+                            <form class="form" method="POST" action="{% url 'api:edit-contact' cid=contact.id %}">
+                                {% csrf_token %}
+                                <div class="card-content">
+                                    <div class="level">
+                                        <div class="level-left">
+                                            <h1 class="title">{{ contact.name }}</h1>
+                                        </div>
+                                        <div class="level-right">
+                                            <div class="dropdown is-right is-hoverable">
+                                                <div class="dropdown-trigger">
+                                                    <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                                        aria-controls="{{ contact.id }}-menu">
+                                                        <span class="icon is-medium">
+                                                            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div id="{{ contact.id }}-menu" class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="https://www.linkedin.com/search/results/index/?keywords={{ contact.name }} {{ account.name }}"
+                                                        target="_blank">Search</a>
+                                                    {% if contact.status != 'upload' %}
+                                                    <a class="dropdown-item"
+                                                        href="{% url 'api:queue-contact' cid=contact.id %}">Queue</a>
+                                                    {% endif %}
+                                                    <a class="dropdown-item"
+                                                        href="{% url 'api:delete-contact' cid=contact.id %}">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <div class="field">
+                                            <div class="control">
+                                                <input name="name" class="input" type="text" value="{{ contact.name }}"
+                                                    placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <input name="title" class="input" type="text"
+                                                    value="{{ contact.title }}" placeholder="Title">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <input name="direct" class="input" type="text"
+                                                    value="{{ contact.direct }}" placeholder="Direct Line">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <input name="mobile" class="input" type="text"
+                                                    value="{{ contact.mobile }}" placeholder="Mobile Phone">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <input name="email" class="input" type="text"
+                                                    value="{{ contact.email }}" placeholder="Email Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="control">
+                                            <button class="button is-fullwidth">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="column is-6">
+                        <div class="card">
+                            <div class="card-footer">
+                                <a class="card-footer-item is-primary"
+                                    href="{% url 'api:add-contact' sfid=account.sfid %}">
+                                    New Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

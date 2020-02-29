@@ -1,0 +1,11 @@
+Hello, {name}!
+
+Welcome to Smartian Space!
+
+If you just signed up on SmartHub with this email, follow this link to confirm your email:
+
+https://s.satelltes.smartian.space/confirm?username={username}&cid={cid}
+
+Cheers,
+
+Winston the Smartian

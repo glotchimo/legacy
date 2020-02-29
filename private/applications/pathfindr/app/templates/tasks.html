@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+        <nav class="panel">
+            <p class="panel-heading">
+                Enrichment Tasks
+            </p>
+            {% for task in tasks %}
+            <a class="panel-block" href="{% url 'enrich' account_id=task.sfid %}">
+                <span class="panel-icon">
+                    {{ forloop.counter }}
+                </span>
+                {{ task.name }}
+            </a>
+            {% endfor %}
+        </nav>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card meta-card has-shadow">
+                    <div class="card-content">
+                        <div class="level">
+                            <div class="level-left">
+                                <h1 class="title is-4">{{ account.name }}</h1>
+                            </div>
+                            <div class="level-right">
+                                <div class="dropdown is-right is-hoverable">
+                                    <div class="dropdown-trigger">
+                                        <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                            aria-controls="dropdown-menu">
+                                            <span class="icon is-medium">
+                                                <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div id="dropdown-menu" class="dropdown-menu">
+                                        <a class="dropdown-item" target="_blank"
+                                            href="https://www.linkedin.com/search/results/index/?keywords={{ account.name }}">Search</a>
+                                        <a class="dropdown-item" target="_blank"
+                                            href="{% url 'api:get-hierarchy' sfid=account.sfid %}">View Hierarchy</a>
+                                        {% if account.status == 'enrich' %}
+                                        <a class="dropdown-item"
+                                            href="{% url 'api:mark-account' sfid=account.sfid status='upload' %}">Upload
+                                            to Salesforce</a>
+                                        {% elif request.user.is_staff and account.status == 'upload' %}
+                                        <a class="dropdown-item"
+                                            href="{% url 'api:mark-account' sfid=account.sfid status='enrich' %}">Cancel
+                                            Upload</a>
+                                        {% endif %}
+                                        {% if not account.cleaned %}
+                                        <a class="dropdown-item"
+                                            href="{% url 'api:mark-account' sfid=account.sfid status='cleaned' %}">Complete
+                                            Cleaning</a>
+                                        {% endif %}
+                                        {% if not account.enriched %}
+                                        <a class="dropdown-item"
+                                            href="{% url 'api:mark-account' sfid=account.sfid status='enriched' %}">Complete
+                                            Enrichment</a>
+                                        {% endif %}
+                                        <a class="dropdown-item" target="_blank"
+                                            href="{% url 'api:cancel-enrichment' sfid=account.sfid %}">Cancel
+                                            Enrichment</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tag">{{ account.status }}</div>
+                        {% if account.cleaned %}
+                        <div class="tag">cleaned</div>
+                        {% endif %}
+                        {% if account.enriched %}
+                        <div class="tag">enriched</div>
+                        {% endif %}
+                        <hr>
+                        <div class="content">
+                            <div class="level">
+                                <div class="level-left">
+                                    Existing Contacts:
+                                </div>
+                                <div class="level-right">
+                                    <b>{{ old }}</b>
+                                </div>
+                            </div>
+                            <div class="level">
+                                <div class="level-left">
+                                    Prospective Contacts:
+                                </div>
+                                <div class="level-right">
+                                    <b>{{ new }}</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a class="card-footer-item cfi-center is-primary"
+                            href="{% url 'app:edit' sfid=account.sfid %}">Edit</a>
+                    </footer>
+                </div>
+            </div>
+            <div class="column is-two-thirds">
+                <div class="columns is-multiline">
+                    {% for contact in contacts %}
+                    <div class="column is-6">
+                        <div id="{{ contact.id }}" class="card has-shadow">
+                            <div class="card-content">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div class="title is-6">{{ contact.name }}</div>
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="dropdown is-right is-hoverable">
+                                            <div class="dropdown-trigger">
+                                                <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                                    aria-controls="{{ contact.id }}-menu">
+                                                    <span class="icon is-medium">
+                                                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div id="{{ contact.id }}-menu" class="dropdown-menu">
+                                                <a class="dropdown-item"
+                                                    href="https://www.linkedin.com/search/results/index/?keywords={{ contact.name }} {{ account.name }}"
+                                                    target="_blank">Search</a>
+                                                {% if contact.status != 'upload' %}
+                                                <a class="dropdown-item"
+                                                    href="{% url 'api:queue-contact' cid=contact.id %}">Queue</a>
+                                                {% endif %}
+                                                {% if not contact.cleaned %}
+                                                <a class="dropdown-item"
+                                                    href="{% url 'api:mark-contact' cid=contact.id status='cleaned' %}">
+                                                    Mark as Cleaned</a>
+                                                {% endif %}
+                                                <a class="dropdown-item"
+                                                    href="{% url 'api:delete-contact' cid=contact.id %}">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    {% if contact.ctype == 'old' %}
+                                    <span class="tag">in sfdc</span>
+                                    {% elif contact.ctype == 'new' %}
+                                    <span class="tag">new</span>
+                                    {% endif %}
+                                    {% if contact.status == 'enrich' %}
+                                    <span class="tag">ready to add</span>
+                                    {% elif contact.status == 'upload' %}
+                                    <span class="tag">queued to upload</span>
+                                    {% endif %}
+                                    {% if contact.cleaned %}
+                                    <span class="tag">cleaned</span>
+                                    {% endif %}
+                                </div>
+                                <hr>
+                                <div class="content">
+                                    <div>
+                                        <span>Title:</span>
+                                        <p class="field-name">{{ contact.title }}</p>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Direct:</span>
+                                        <p class="field-name">{{ contact.direct }}</p>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Mobile:</span>
+                                        <p class="field-name">{{ contact.mobile }}</p>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Email:</span>
+                                        <p class="field-name">{{ contact.email }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

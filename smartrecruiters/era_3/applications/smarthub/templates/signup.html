@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="columns is-centered">
+        <div class="column is-one-third">
+            <div class="card">
+                <div class="card-content">
+                    <h1 class="label subtitle">Sign up for SmartFinder</h1>
+                    <hr>
+                    <form class="form" method="POST" action="{{ url_for('signup') }}">
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">First Name</label>
+                                <input type="text" class="input" name="first" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Last Name</label>
+                                <input type="text" class="input" name="last" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Username</label>
+                                <input type="text" class="input" name="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Email</label>
+                                <input type="email" class="input" name="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Salesforce ID</label>
+                                <input type="text" class="input" name="sfid" placeholder="Salesforce ID">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Password</label>
+                                <input type="password" class="input {% if mismatch %}is-danger{% endif %}"
+                                    name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label">Confirm Password</label>
+                                <input type="password" class="input {% if mismatch %}is-danger{% endif %}"
+                                    name="confirmation" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    {% if mismatch %}
+                    <div class="message is-danger">
+                        <div class="message-body">
+                            Your passwords did not match.
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if error %}
+                    <div class="message is-danger">
+                        <div class="message-body">
+                            Error creating user. Please contact system administrator.
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

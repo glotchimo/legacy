@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <h1 class="title">all your apis, in one place.</h1>
+        <div class="columns is-2">
+            <div class="column is-5">
+                <h1 class="title is-4">manage</h1>
+                <p class="content">
+                    To manage your APIs, navigate to the dashboard, and view/edit each API
+                    individually. You can add APIs, endpoints, and edit all of their attributes.
+                    That said, there are a number of rules (as of now) that must be followed
+                    in order for all of your endpoints to operate correctly.
+                </p>
+                <h2 class="subtitle is-5">API Setup</h2>
+                <p class="content">
+                    When you click "Add API" on the dashboard page, you will be redirected to
+                    the edit page for that new API. Fill in the name, base URL, and description fields.
+                    If authentication is required across the whole API, select whatever auth type is
+                    used from the dropdown, and then fill in the necessary information.
+                </p>
+                <p class="content">
+                    The name and description of your API can be any normal strings, but your base URL
+                    <b>must</b> have a schema (i.e. <code class="code">http://</code> or
+                    <code class="code">https://</code> prefix). It must also be a
+                    valid URL in order for any endpoints on it to work.
+                </p>
+                <h2 class="subtitle is-5">Endpoint Setup</h2>
+                <p class="content">
+                    On the API edit or view page, you can click "Add Endpoint" to create
+                    a new endpoint on the given API. Like the API, the name and description can
+                    be any normal string, but the path must be a valid path from the base.
+                </p>
+                <p class="content">
+                    For example, if your base URL is <code class="code">https://httpbin.org</code>,
+                    your path must start with a <code class="code">/</code> like this:
+                    <code class="code">/json</code>. Similarly, if your base <b>ends</b> with a
+                    <code class="code">/</code>, your endpoints cannot.
+                </p>
+                <h3 class="subtitle is-5">Headers, Parameters, Body, and Targets</h3>
+                <p class="content">
+                    All of these fields must consist of valid JSON strings. The <code class="code">headers</code>,
+                    <code class="code">params</code> and <code class="code">body</code> fields must be encapsulated
+                    by curly braces <code class="code">{}</code>, and the <code class="code">targets</code>
+                    field must be encapsulated by brackets <code class="code">[]</code>.
+                </p>
+            </div>
+            <div class="column is-1"></div>
+            <div class="column is-5">
+                <h1 class="title is-4">access</h1>
+                <p class="content">
+                    To access these APIs, use <a class="url">easy.ax-s.io/api</a>. Follow these
+                    procedures to do so.
+                </p>
+                <p class="content">
+                    First of all, you need to use the API token shown on the view page of the
+                    API you want to access. Build the URL as such:
+                </p>
+                <p class="content">
+                    <code class="code">https://easy.ax-s.io/api/call/[your api token]</code>
+                </p>
+                <p class="content">
+                    This alone won't operate, so to access your endpoints, add the following parameter
+                    to your URL.
+                </p>
+                <p class="content">
+                    <code
+                        class="code">https://easy.ax-s.io/api/call/[your api token]?endpoint=[your endpoint name]</code>
+                </p>
+                <p class="content">
+                    And finally, we need authorization. To get in the front door, use your unique
+                    user token in the headers of your request, like this.
+                </p>
+                <p class="content">
+                    <code class="code">Authorization: Bearer [your user token]</code>
+                </p>
+                <p class="content">
+                    As this endpoint only accepts POST requests, you can specify instance-specific
+                    information in the request body. The body must be valid JSON, and the parameters must
+                    be <code class="code">headers</code>, <code class="code">params</code> or
+                    <code class="code">body</code>, just like in the endpoint setup in the app.
+                </p>
+                <h2 class="subtitle">Client Libraries</h2>
+                <p class="content">
+                    If you want an even cleaner way to access your APIs,
+                    head over to <a href="https://github.com/ax-s-io" target="_blank">our GitHub page</a> and check out
+                    the open-source client library options. If the
+                    language you use isn't supported, email admin@ax-s.io to get a project started.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

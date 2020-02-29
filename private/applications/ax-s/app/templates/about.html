@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-2">
+                    <p>
+                        <img src="{% static 'app/img/ax-s(b).jpg' %}">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <h1 class="title is-3">
+                   1.  the story
+                </h1>
+                <p class="content">
+                    After only two years building projects, we realized that API handling is inefficient and annoying.
+                    This issue inspired us to create a Python library called <b class="url">ergal</b>. The function of this library
+                    was to allow the user to store API access data in a local SQLite3 database and access it/use it
+                    quickly and easily with utility methods. This approach was effective and served as a proof of concept,
+                    leading us to create the <b class="url">ax-s</b> platform.
+                </p>
+            </div>
+            <div class="column">
+                <h1 class="title is-3">
+                    2. the utility
+                </h2>
+                <p class="content">
+                    Why have ten dependencies when you could have one? <b class="url">ax-s</b> allows you to plug in your dependencies for
+                    access through one API. You can provide authentication information, endpoints, data targets, etc.
+                    and access those registered APIs through <b class="url">easy.ax-s.io/api</b>, our simple but advanced API.
+                </p>
+            </div>
+            <div class="column">
+                <h1 class="title is-3">
+                    3. the goal
+                </h1>
+                <p class="content">
+                    As cloud computing becomes the norm, dependency on external services becomes more logical and necessary
+                    for development teams. Writing handlers and clients for every one of your dependencies causes
+                    an array of issues. The goal of <b class="url">ax-s</b> is to increase development efficiency, codebase readability,
+                    and project scalability by making API management and usage easy.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

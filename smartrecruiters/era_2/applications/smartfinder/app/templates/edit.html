@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card meta-card has-shadow">
+                    <div class="card-content">
+                        <div class="level">
+                            <div class="level-left">
+                                <h1 class="title is-4">{{ account.name }}</h1>
+                            </div>
+                            <div class="level-right">
+                                <div class="dropdown is-right is-hoverable">
+                                    <div class="dropdown-trigger">
+                                        <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                            aria-controls="meta-menu">
+                                            <span class="icon is-medium">
+                                                <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div id="meta-menu" class="dropdown-menu">
+                                        <a class="dropdown-item" target="_blank"
+                                            href="https://www.linkedin.com/search/results/index/?keywords={{ account.name }}">Search</a>
+                                        <a class="dropdown-item" target="_blank"
+                                            href="{% url 'api:get-hierarchy' sfid=account.sfid %}">View Hierarchy</a>
+                                        <a class="dropdown-item"
+                                            href="{% url 'api:queue-contacts' sfid=account.sfid %}">Queue All</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tag">{{ account.status }}</div>
+                        {% if account.cleaned %}
+                        <div class="tag">cleaned</div>
+                        {% endif %}
+                        {% if account.enriched %}
+                        <div class="tag">enriched</div>
+                        {% endif %}
+                        <hr>
+                        <div class="content">
+                            <div class="level">
+                                <div class="level-left">
+                                    Existing Contacts:
+                                </div>
+                                <div class="level-right">
+                                   <b>{{ old }}</b>
+                                </div>
+                            </div>
+                            <div class="level">
+                                <div class="level-left">
+                                    Prospective Contacts:
+                                </div>
+                                <div class="level-right">
+                                    <b>{{ new }}</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a class="card-footer-item cfi-center is-primary" href="{% url 'app:account' sfid=account.sfid %}">Return
+                            to View</a>
+                    </footer>
+                </div>
+            </div>
+            <div class="column is-two-thirds">
+                <div class="columns is-multiline">
+                    {% for contact in contacts %}
+                    <div class="column is-6">
+                        <div class="card has-shadow">
+                            <form class="form" method="POST" action="{% url 'api:edit-contact' cid=contact.id %}">
+                                {% csrf_token %}
+                                <div class="card-content">
+                                    <div class="level">
+                                        <div class="level-left">
+                                            <h1 class="title is-6">{{ contact.name }}</h1>
+                                        </div>
+                                        <div class="level-right">
+                                            <div class="dropdown is-right is-hoverable">
+                                                <div class="dropdown-trigger">
+                                                    <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                                        aria-controls="{{ contact.id }}-menu">
+                                                        <span class="icon is-medium">
+                                                            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div id="{{ contact.id }}-menu" class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="https://www.linkedin.com/search/results/index/?keywords={{ contact.name }} {{ account.name }}"
+                                                        target="_blank">Search</a>
+                                                    {% if contact.status != 'upload' %}
+                                                    <a class="dropdown-item"
+                                                        href="{% url 'api:queue-contact' cid=contact.id %}">Queue</a>
+                                                    {% endif %}
+                                                    <a class="dropdown-item"
+                                                        href="{% url 'api:delete-contact' cid=contact.id %}">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        {% if contact.ctype == 'old' %}
+                                        <span class="tag">in sfdc</span>
+                                        {% elif contact.ctype == 'new' %}
+                                        <span class="tag">new</span>
+                                        {% endif %}
+                                        {% if contact.status == 'enrich' %}
+                                        <span class="tag">ready to add</span>
+                                        {% elif contact.status == 'upload' %}
+                                        <span class="tag">queued to upload</span>
+                                        {% endif %}
+                                        {% if contact.cleaned %}
+                                        <span class="tag">cleaned</span>
+                                        {% endif %}
+                                    </div>
+                                    <hr>
+                                    <div class="content">
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="label">Name</label>
+                                                <input name="name" class="input" type="text" value="{{ contact.name }}"
+                                                    placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="label">Title</label>
+                                                <input name="title" class="input" type="text"
+                                                    value="{{ contact.title }}" placeholder="Title">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="label">Direct Line</label>
+                                                <input name="direct" class="input" type="text"
+                                                    value="{{ contact.direct }}" placeholder="Direct Line">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="label">Mobile Phone</label>
+                                                <input name="mobile" class="input" type="text"
+                                                    value="{{ contact.mobile }}" placeholder="Mobile Phone">
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control">
+                                                <label class="label">Email</label>
+                                                <input name="email" class="input" type="text"
+                                                    value="{{ contact.email }}" placeholder="Email Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="control">
+                                            <button class="button is-fullwidth">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="column is-6">
+                        <div class="card">
+                            <div class="card-footer">
+                                <a class="card-footer-item is-primary"
+                                    href="{% url 'api:add-contact' sfid=account.sfid %}">
+                                    New Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+Hello, {name}!
+
+First of all, welcome to ax-s! You're about to give your codebase a massive break from way too much boilerplate code.
+
+If you just signed up for ax-s with this email, here's your user token:
+
+{token}
+
+If you didn't, go ahead and disregard this. And no you can't hack us with just this token.
+
+You little deviant.
+
+Head to easy.ax-s.io to get started!
+
+Cheers,
+
+The ax-s Team

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        {% if not contacts %}
+        <div class="notification is-warning has-text-centered">
+            No contacts to add here!
+        </div>
+        {% endif %}
+        <form id="enrich-form" method="POST" action=".">{% csrf_token %}
+            {% for contact in contacts %}
+            <div class="box">
+                <div class="container">
+                    <div class="columns">
+                        <div class="column is-half">
+                            <p>
+                                {{ contact.name }}
+                            </p>
+                            <p class="subtitle">
+                                {{ contact.title }}
+                            </p>
+                        </div>
+                        <div class="column tag is-1 is-offset-4">
+                            <p>
+                                Class {{ contact.rating }}
+                            </p>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input name="contacts" class="checkbox" type="checkbox" form="enrich-form" value="{{ contact.id }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="button is-info" href="https://www.linkedin.com/search/results/index/?keywords={{ contact.name }} {{ account.name }}" target="_blank">
+                            LinkedIn Search
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="field">
+                <div class="control">
+                    <button class="button is-dark is-large is-fullwidth" type="submit" form="enrich-form">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script type="application/javascript">
+let boxes = [...document.getElementsByClassName("box")];
+let inputs = document.getElementsByClassName("checkbox");
+for (let i = 0; i < boxes.length; i++) {
+    boxes[i].addEventListener("click", () => {
+        boxes[i].classList.toggle("active")
+        inputs[i].checked ? inputs[i].checked = false : inputs[i].checked = true
+    });
+}
+</script>
+
+{% endblock %}

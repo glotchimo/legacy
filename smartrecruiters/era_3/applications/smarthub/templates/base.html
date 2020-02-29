@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SmartHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/main.css') }}" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css"
+        integrity="sha256-8B1OaG0zT7uYA572S2xOxWACq9NXYPQ+U5kHPV1bJN4=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar is-fixed-top">
+        <div class="navbar-brand">
+            <a href="{{ url_for('index') }}" class="navbar-item" style="font-weight: bold;">
+                SmartHub
+            </a>
+
+            <a id="navtoggle" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navmenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navmenu" class="navbar-menu">
+            {% if 'token' in session %}
+            <div class="navbar-start">
+            </div>
+            {% endif %}
+            <div class="navbar-end">
+                {% if 'token' in session %}
+                <a class="navbar-item" href="{{ url_for('logout') }}">
+                    Log Out
+                </a>
+                {% else %}
+                <a class="navbar-item" href="{{ url_for('login') }}">
+                    Log In
+                </a>
+                <a class="navbar-item" href="{{ url_for('signup') }}">
+                    Sign Up
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+
+</html>

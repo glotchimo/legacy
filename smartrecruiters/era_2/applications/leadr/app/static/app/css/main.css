@@ -1,0 +1,135 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+#wrapper {
+    flex: 1;
+}
+
+/* BULMA RESTYLING */
+h1.title {
+    font-weight: bold !important;
+}
+h2.title {
+    font-weight: semi bold;
+}
+
+/* NAVBAR STYLING */
+.navbar {
+    padding: 10px 10px 0px 10px;
+}
+
+a.navbar-item {
+    color: #272727 !important;
+    background: #fff !important;
+    position: relative;
+    text-decoration: none;
+}
+
+a.navbar-item.navigator:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #66c566;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+a.navbar-item.navigator:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+a.navbar-item.navigator.here {
+    color: #272727 !important;
+}
+
+/*  OTHER STYING */
+.is-primary {
+    color: #fff !important;
+    background: #82d380 !important;
+    transition: all 250ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.is-primary:hover {
+    background: #66c566 !important;
+}
+
+.is-danger {
+    color: #fff !important;
+    background: #cf666f !important;
+    transition: all 250ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.is-danger:hover {
+    background: #cf515e !important;
+}
+
+.is-warning {
+    color: #fff !important;
+    background: #f5e8a5 !important;
+    transition: all 250ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.is-warning:hover {
+    background: #ffe667 !important;
+}
+
+.is-info {
+    color: #fff !important;
+    background: #6db9ec !important;
+    transition: all 250ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.is-info:hover {
+    background: #49abec !important;
+}
+
+.sfid {
+    color: #c0f0c0 !important;
+}
+
+.field-name {
+    font-weight: bold !important;
+}
+
+/* TAG STYLING */
+
+a, button {
+    transition: all 250ms cubic-bezier(0.445, 0.05, 0.55, 0.95) !important;
+}
+
+/* CARD STYLING */
+.meta-card {
+    position: sticky !important;
+    top: 2rem !important;
+}
+
+/* DROPDOWN STYLING */
+.dropdown-trigger {
+    color: #000 !important;
+    border-color: #fff !important;
+}
+
+.icon {
+    color: #000 !important;
+}
+
+.dropdown-menu {
+    background: #fff;
+    border: 1px solid lightgray;
+    color: #fff;
+}
+
+a.dropdown-item {
+
+}

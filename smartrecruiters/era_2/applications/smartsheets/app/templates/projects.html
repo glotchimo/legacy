@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if error %}
+<section class="section">
+    <div class="container">
+        <div class="notification">
+            Failed to load sheet.
+            Make sure the information is correct and the permissions are set in the sheet.
+        </div>
+    </div>
+</section>
+{% endif %}
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Enrich Lists
+            </h1>
+            <h2 class="subtitle">
+                <p>Here are your active projects and metrics.</p>
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <div class="card meta-card">
+                    <div class="card-content">
+                        <p class="title is-4">{{ request.user }}</p>
+                        <hr>
+                        <div class="content">
+                            <div class="level">
+                                <div class="level-left">
+                                    Requested Projects:
+                                </div>
+                                <div class="level-right">
+                                    <b>{{ requested }}</b>
+                                </div>
+                            </div>
+                            <div class="level">
+                                <div class="level-left">
+                                    Completed Projects:
+                                </div>
+                                <div class="level-right">
+                                    <b>{{ completed }}</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-two-thirds">
+                {% for project in projects %}
+                <a href="{{ project.url }}" target="_blank">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="level">
+                                <div class="level-left">
+                                    <h1 class="title is-4">{{ project.name }}</h1>
+                                </div>
+                                <div class="level-right">
+                                    <div class="dropdown is-right is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a class="dropdown-button" aria-role="button" aria-haspopup="true"
+                                                aria-controls="dropdown-menu">
+                                                <span class="icon is-medium">
+                                                    <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div id="dropdown-menu" class="dropdown-menu">
+                                            {% if project.status != 'requested' %}
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:mark-project' pid=project.id status='requested' %}">
+                                                Request
+                                            </a>
+                                            {% endif %}
+                                            {% if project.status != 'running bots' %}
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:mark-project' pid=project.id status='running bots' %}">
+                                                Run Bots
+                                            </a>
+                                            {% endif %}
+                                            {% if project.status != 'in progress' and request.user.is_staff %}
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:mark-project' pid=project.id status='in progress' %}">
+                                                Start
+                                            </a>
+                                            {% endif %}
+                                            {% if project.status != 'completed' %}
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:mark-project' pid=project.id status='completed' %}">
+                                                Complete
+                                            </a>
+                                            {% endif %}
+                                            <a class="dropdown-item"
+                                                href="{% url 'api:delete-project' pid=project.id %}">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tag">{{ project.status }}</div>
+                            <hr>
+                            <div class="content">
+                                <div class="level">
+                                    <div class="level-left">
+                                        Size:
+                                    </div>
+                                    <div class="level-right">
+                                        <b>{{ project.size }} rows</b>
+                                    </div>
+                                </div>
+                                <div class="level">
+                                    <div class="level-left">
+                                        Progress:
+                                    </div>
+                                    <div class="level-right">
+                                        <b>{{ project.progress }}%</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <br>
+                {% endfor %}
+                <div class="card">
+                    <form class="form" action="{% url 'api:create-project' %}" method="POST">{% csrf_token %}
+                        <div class="card-content">
+                            <div class="field">
+                                <div class="control">
+                                    <label class="label">Sheet URL</label>
+                                    <input name="url" class="input" type="text" placeholder="Sheet URL">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="label">Worksheet Name</label>
+                                    <input name="worksheet" class="input" type="text" placeholder="Worksheet Name">
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="card-footer">
+                            <button class="card-footer-item cfi-center is-primary">
+                                Create a new project request
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

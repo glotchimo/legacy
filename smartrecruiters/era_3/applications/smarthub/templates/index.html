@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if confirm %}
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-full">
+                <div class="message is-info">
+                    <div class="message-body">
+                        Check your email to confirm your account and finish the sign-up process.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="hero-title">Welcome to Smartian Space!</h1>
+            <h2 class="hero-subtitle">
+                Here you can find internal apps and resources.
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns is-multiline">
+            {% for app in apps %}
+            <div class="column is-one-third">
+                <a href="{{ app['url'] }}">
+                    <div class="card scale">
+                        <div class="card-content">
+                            <h2 class="subtitle">{{ app['name'] }}</h2>
+                            <div class="content">
+                                {{ app['description'] }}
+                            </div>
+                            <ul>
+                                {% for resource in app['resources'] %}
+                                <li class="list-item">
+                                    <span><i class="fas fa-link"></i></span>
+                                    <a href="{{ resource['url'] }}" target="_blank">{{ resource['name'] }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

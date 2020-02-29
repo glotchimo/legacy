@@ -1,0 +1,14 @@
+[
+    {
+        "name": "smartfinder",
+        "version": "2.0.1",
+        "url": "https://finder.smartian.space",
+        "description": "SmartFinder is an app that enables you to collect contacts with efficiency and ease.",
+        "resources": [
+            {
+                "name": "SmartFinder Guide",
+                "url": "https://docs.google.com/document/d/1TyE3jBreqhDRgFrAkU2dFZHmXOWGPKiTvsqJHoRt7tQ"
+            }
+        ]
+    }
+]

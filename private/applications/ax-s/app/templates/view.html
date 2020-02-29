@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- START APIVIEW PAGE -->
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <!-- START META PANEL -->
+            <div class="column is-one-third">
+                <h2 class="title">meta</h2>
+                <!-- START META BOX -->
+                <div class="card is-sticky">
+                    <div class="card-content">
+                        <!-- START META DETAILS -->
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-5">{{ api.name }}</p>
+                                <p class="subtitle is-6 url">
+                                    {{ api.base }}
+                                    {{ api.token }}
+                                </p>
+                                <p class="content">{{ api.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- START CARD FOOTER -->
+                    <footer class="card-footer">
+                        <a class="card-footer-item cfi-left" href="{% url 'app:edit' api.name %}">Edit</a>
+                        <a class="card-footer-item cfi-right is-danger" href="{% url 'api:api-delete' api.name  %}">Delete</a>
+                    </footer>
+                    <!-- END CARD FOOTER -->
+                </div>
+                <!-- END META BOX -->
+            </div>
+            <!-- END META PANEL -->
+            <!-- START ENDPOINT PANELS -->
+            <div class="column is-two-thirds">
+                <h2 class="title">endpoints</h2>
+                <!-- START ADDER BUTTON -->
+                <div class="card card-linked">
+                    <footer class="card-footer">
+                        <a class="card-footer-item" href="{% url 'api:endpoint-add' api.name %}">Add Endpoint</a>
+                    </footer>
+                </div>
+                <!-- END ADDER BUTTON -->
+                <br>
+                <!-- START ENDPOINT CARDS -->
+                {% for endpoint in endpoints %}
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-5">{{ endpoint.name }}</p>
+                                <p class="subtitle is-6 url">{{ endpoint.path }}</p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            {{ endpoint.description }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+                <!-- END ENDPOINT CARDS -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END APIVIEW PAGE -->
+
+{% endblock %}

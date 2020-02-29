@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-2 has-text-centered">
+                    <p class="title">
+                        <img src="{% static 'app/img/logo.png' %}">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="columns is-centered">
+        <div class="column is-one-third">
+            <div class="card">
+                <div class="card-content">
+                    <h1 class="label subtitle">Sign up for ax-s.</h1>
+                    <hr>
+                    <form class="form" method="POST" action="{% url 'app:signup' %}">{% csrf_token %}
+                        <div class="field">
+                            <div class="control">
+                                <input type="text" class="input is-rounded" name="first" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="text" class="input is-rounded" name="last" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="text" class="input is-rounded" name="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="email" class="input is-rounded" name="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="password" class="input is-rounded {% if error %}is-danger{% endif %}" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="password" class="input is-rounded {% if error %}is-danger{% endif %}" name="confirmation" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        {% if error %}
+                        <div class="message is-danger">
+                            <div class="message-body">
+                                Your password did not match.
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-rounded">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

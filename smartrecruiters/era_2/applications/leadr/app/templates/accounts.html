@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="columns is-multiline">
+            {% for account in accounts %}
+            <div class="column is-3">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">
+                            {{ account.name }}
+                            <span class="tag">{{ account.status }}</span>
+                        </p>
+                        <p class="subtitle is-6 sfid">{{ account.sfid }}</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a class="card-footer-item is-primary" href="{% url 'app:account' sfid=account.sfid %}">Go</a>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

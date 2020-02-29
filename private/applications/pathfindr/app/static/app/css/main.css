@@ -1,0 +1,12 @@
+* {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+a:hover {
+    color: #00D1B2 !important;
+    background: #FFFFFF !important;
+}
+button:hover {
+    color: #00D1B2 !important;
+    background: #FFFFFF !important;
+}

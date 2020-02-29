@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="hero main-hero">
+    <div class="hero-body">
+        <div class="container is-centered">
+            <h1 class="title">
+                the ax-s platform
+            </h1>
+            <h2 class="subtitle">
+                Your gateway to code cleanliness.
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-4">
+                <h2 class="subtitle">
+                    a complex problem
+                </h2>
+                <div class="content">
+                    Your codebase is busy with all sorts of API handlers,
+                    compromising readability and scalability.
+                </div>
+            </div>
+            <div class="column is-4">
+                <h2 class="subtitle">
+                    a simple solution
+                </h2>
+                <div class="content">
+                    You plug your dependencies into ax-s, use our simple
+                    interface to control them, and our advanced API to access them.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <article class="message is-primary">
+                    <div class="message-header">
+                        <p>Get started.</p>
+                    </div>
+                    <p class="message-body">
+                        Sign up and check the <a href="{% url 'app:docs' %}">docs</a> and learn how to use
+                        <b>api.ax-s.io</b> to control your APIs.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

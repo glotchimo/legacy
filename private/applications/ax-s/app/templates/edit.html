@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- START APIEDIT PAGE -->
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <!-- START META PANEL -->
+            <div class="column is-one-third">
+                <h2 class="title">meta</h2>
+                <!-- START META BOX -->
+                <div class="card is-sticky">
+                    <div class="card-content">
+                        <!-- START META FORM -->
+                        <form class="form" method="POST" action="{% url 'app:edit' api.name %}">{% csrf_token %}
+                            <!-- START NAME FIELD -->
+                            <div class="field">
+                                <label class="label subtitle">API Name</label>
+                                <div class="control">
+                                    <input name="name" class="input  is-rounded" type="text" value="{{ api.name }}"
+                                        placeholder="API Name">
+                                </div>
+                            </div>
+                            <!-- END NAME FIELD -->
+                            <!-- START BASE URL FIELD -->
+                            <div class="field">
+                                <label class="label subtitle">Base URL</label>
+                                <div class="control">
+                                    <input name="base" class="input is-rounded" type="text" value="{{ api.base }}"
+                                        placeholder="Base URL">
+                                </div>
+                            </div>
+                            <!-- END BASE URL FIELD -->
+                            <!-- START DESCRIPTION FIELD -->
+                            <div class="field">
+                                <label class="label subtitle">Description</label>
+                                <div class="control">
+                                    <textarea name="description" class="textarea is-rounded" maxlength="256"
+                                        placeholder="Description">{{ api.description }}</textarea>
+                                </div>
+                            </div>
+                            <!-- END DESCRIPTION FIELD -->
+                            <br>
+                            <!-- START SAVE BUTTON FIELD -->
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-dark is-rounded is-fullwidth">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- END SAVE BUTTON FIELD -->
+                        </form>
+                        <!-- END META FORM -->
+                    </div>
+                    <!-- START CARD FOOTER -->
+                    <footer class="card-footer">
+                        <a class="card-footer-item cfi-center" href="{% url 'app:view' api.name %}">Return to View</a>
+                    </footer>
+                    <!-- END CARD FOOTER -->
+                </div>
+                <!-- END META BOX -->
+            </div>
+            <!-- END META PANEL -->
+            <!-- START ENDPOINT PANELS -->
+            <div class="column is-two-thirds">
+                <h2 class="title">endpoints</h2>
+                <!-- START ADDER BUTTON -->
+                <div class="card card-linked">
+                    <footer class="card-footer">
+                        <a class="card-footer-item" href="{% url 'api:endpoint-add' api.name %}">Add Endpoint</a>
+                    </footer>
+                </div>
+                <!-- END ADDER BUTTON -->
+                <br>
+                <!-- START ENDPOINT CARDS -->
+                {% for endpoint in endpoints %}
+                <div class="card">
+                    <!-- START ENDPOINT FORM -->
+                    <form name="{{ endpoint.name }}" class="form card-content" method="POST"
+                        action="{% url 'api:endpoint-edit' api.name endpoint.name %}">{% csrf_token %}
+                        <!-- START NAME FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Name</label>
+                            <div class="control">
+                                <input name="name" class="input is-rounded" type="text" value="{{ endpoint.name }}">
+                            </div>
+                        </div>
+                        <!-- END NAME FIELD -->
+                        <!-- START PATH FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Path</label>
+                            <div class="control">
+                                <input name="path" class="input is-rounded" type="text" value="{{ endpoint.path }}">
+                            </div>
+                        </div>
+                        <!-- END PATH FIELD -->
+                        <!-- START METHOD FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Method</label>
+                            <div class="control">
+                                <div class="select is-full-width">
+                                    <select name="method">
+                                        <option {% if endpoint.method == 1 %} selected="selected" {% endif %}>GET
+                                        </option>
+                                        <option {% if endpoint.method == 2 %} selected="selected" {% endif %}>POST
+                                        </option>
+                                        <option {% if endpoint.method == 3 %} selected="selected" {% endif %}>PUT
+                                        </option>
+                                        <option {% if endpoint.method == 4 %} selected="selected" {% endif %}>PATCH
+                                        </option>
+                                        <option {% if endpoint.method == 5 %} selected="selected" {% endif %}>DELETE
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END METHOD FIELD -->
+                        <!-- START DESCRIPTION FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Description</label>
+                            <div class="control">
+                                <textarea name="description" class="textarea is-rounded"
+                                    placeholder="Description">{{ endpoint.description }}</textarea>
+                            </div>
+                        </div>
+                        <!-- END DESCRIPTION FIELD -->
+                        <br>
+                        <!-- START HEADERS FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Headers</label>
+                            <div class="control">
+                                <textarea name="headers" class="textarea is-rounded"
+                                    placeholder="Request headers">{{ endpoint.headers }}</textarea>
+                            </div>
+                        </div>
+                        <!-- END HEADERS FIELD -->
+                        <br>
+                        <!-- START PARAMETERS FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Parameters</label>
+                            <div class="control">
+                                <textarea name="params" class="textarea is-rounded"
+                                    placeholder="URL parameters">{{ endpoint.params }}</textarea>
+                            </div>
+                        </div>
+                        <!-- END PARAMETERS FIELD -->
+                        <br>
+                        <!-- START BODY FIELD -->
+                        <div class="field">
+                            <label class="label subtitle">Body</label>
+                            <div class="control">
+                                <textarea name="body" class="textarea is-rounded"
+                                    placeholder="Request body">{{ endpoint.body }}</textarea>
+                            </div>
+                        </div>
+                        <!-- END BODY FIELD -->
+                        <br>
+                        <div class="field">
+                            <label class="label subtitle">Targets</label>
+                            <div class="control">
+                                <textarea name="targets" class="textarea is-rounded"
+                                    placeholder="Data targets">{{ endpoint.targets }}</textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="columns">
+                            <div class="column">
+                                <!-- START SAVE BUTTON FIELD -->
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button is-dark is-rounded is-fullwidth">
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- END SAVE BUTTON FIELD -->
+                            </div>
+                            <div class="column">
+                                <!-- START DELETE BUTTON FIELD -->
+                                <div class="field">
+                                    <div class="control">
+                                        <a class="button is-danger is-rounded is-fullwidth"
+                                            href="{% url 'api:endpoint-delete' api.name endpoint.name %}">
+                                            Delete Endpoint
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- END DELETE BUTTON FIELD -->
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END ENDPOINT FORM -->
+                </div>
+                <!-- END ENDPOINT BOX -->
+                <br>
+                {% endfor %}
+            </div>
+            <!-- END ENDPOINT CARDS -->
+        </div>
+    </div>
+</section>
+<!-- END APIEDIT PAGE -->
+
+{% endblock %}

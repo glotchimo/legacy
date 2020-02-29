@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Enrich Accounts
+            </h1>
+            <h2 class="subtitle">
+                <p>Here's a list of accounts waiting to be enriched.</p>
+                <p>If you have linked your SFID, this will list only your accounts.</p>
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns is-multiline">
+            {% for account in accounts %}
+            <div class="column is-3">
+                <div class="card has-link-shadow">
+                    <a href="{% url 'app:account' sfid=account.sfid %}">
+                        <div class="card-content">
+                            <p class="title is-4">
+                                {{ account.name }}
+                                <span class="tag">{{ account.status }}</span>
+                            </p>
+                            <p class="subtitle is-6 sfid">{{ account.sfid }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
